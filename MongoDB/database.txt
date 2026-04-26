@@ -1,0 +1,93 @@
+// Document mean row
+// Collection mean table
+// Database mean a group of collections
+// MongoDB is a NoSQL database, which means it does not use the traditional table-based relational database structure. Instead, it uses a flexible document-oriented data model. In MongoDB, data is stored in BSON (Binary JSON) format, which allows for a more dynamic and schema-less approach to data storage.
+
+
+// lt -- less than
+// gt -- greater than
+// lte -- less than or equal to
+// gte -- greater than or equal to
+// or -- logical OR operator
+// and -- logical AND operator
+// updateOne() -- updates a single document that matches the specified criteria.
+// updateMany() -- updates multiple documents that match the specified criteria.
+// deleteOne() -- deletes a single document that matches the specified criteria.
+// deleteMany() -- deletes multiple documents that match the specified criteria.
+// insertOne() -- inserts a single document into a collection.
+// insertMany() -- inserts multiple documents into a collection.
+// find() -- retrieves documents from a collection that match the specified criteria.
+// findOne() -- retrieves a single document from a collection that matches the specified criteria.
+// $set -- is an update operator in MongoDB that is used to specify the fields and values to be updated in a document. It allows you to set the value of a field or add a new field if it does not exist in the document. When you use $set, you provide an object that contains the field names and their corresponding new values. 
+
+// if i i haven't now the correct value of the document then we use " $ " before any operation to update the document. It is called positional operator and it allows you to update the first array element that matches the specified query criteria.
+
+//  use command to select the database you want to
+ use
+
+//  This is a sample code snippet to insert a new user document into the "Users" collection of a database.And we can add Multiple users by using insertMany() method.
+db.Users.insert({
+  username: "Asharib",
+  JobTitle : "Teacher",
+  email : "ashe@gmail.com",
+  password : 123456789
+})
+ 
+
+// This is a sample code snippet to find all users with the job title "Software Engineer" in the "Users" collection of a database.And we can also use findOne() method to find a single document that matches the specified criteria.
+db.Users.find({
+  JobTile : "Software Engineer"
+})
+
+// lte stands for "(lt) for less than or (e) for equal to". 
+db.Users.find({
+  age: {$lte : 25}
+  })
+
+//   gte stands for "(gt) for greater than or (e) for equal to".
+  db.Users.find({
+  age: {$gte : 25}
+  })
+
+  // or operator is used to combine multiple conditions in a query. It allows you to specify multiple criteria, and the query will return documents that match any of the specified conditions.
+db.Users.find({
+  $or:[{
+    JobTitle: "Software Engineer"
+  },
+  {
+    age : {$gte :40}
+  }]
+})
+
+// and operator is used to combine multiple conditions in a query. It allows you to specify multiple criteria, and the query will return documents that match all of the specified conditions.
+db.Users.find({
+  $and:[{
+    JobTitle: "Software Engineer"
+  },
+  {
+    age : {$gte :20}
+  }]
+})
+
+// Update function is used to modify existing documents in a collection. It allows you to specify criteria to identify the documents you want to update and the new values you want to set for those documents.
+db.Users.updateOne({
+  username: "Asharib"
+},{
+  $set:{
+    JobTitle : "Abroad"
+  
+}})
+
+
+// We can also use update method to add new field to the existing document in a collection. It allows you to specify criteria to identify the documents you want to update and the new values you want to set for those documents.
+db.Users.updateMany({
+    JobTitle : "Software Engineer"
+},{
+  $set:{
+  status : "Married"
+}})
+
+// WE can delete a document from a collection using deleteOne() method. It allows you to specify criteria to identify the document you want to delete.
+db.Users.deleteMany({
+  age : {$lte:15}
+})
