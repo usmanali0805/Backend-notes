@@ -1,16 +1,16 @@
 const express = require('express')
-const responseHandler = require('../helperFunction/responseHandler')
+const {successresponse , errorresponse} = require('../helperFunction/responseHandler')
+const User = require('../models/UserSchema')
+const SignupController = require('../Controller/authController')
 
+const app = express()
 const authRoute = express.Router()
 
 // SignUp //AddUser
-authRoute.post('/signup', (req, res)=>{
-    responseHandler(200 , true , "User Signup Successfully" , [] , res)
-})
-
+app.use('/signup' , SignupController)
 // Login
-authRoute.post('/login', (req , res)=>{
-    responseHandler(200 , true , "User Login Successfully" , [] , res)
+authRoute.post('/login', (req, res) => {
+    return successresponse(200, true, "User Login Successfully", [], res)
 
 })
 

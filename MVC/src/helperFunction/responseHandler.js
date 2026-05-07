@@ -1,6 +1,6 @@
 const { model } = require("mongoose")
 
-const responseHandler = (statusCode , status , message , data , res)=>{
+const successresponse = (statusCode , status , message , data , res)=>{
     return res.status(statusCode).json({
         status : status ,
         message : message , 
@@ -8,4 +8,11 @@ const responseHandler = (statusCode , status , message , data , res)=>{
     })
 }
 
-module.exports = responseHandler
+const errorresponse = (statusCode , status , message, res)=>{
+    return res.status(statusCode).json({
+        status : status ,
+        message : message 
+    })
+}
+
+module.exports = {successresponse , errorresponse}

@@ -4,6 +4,7 @@ const authenticationRoute = require('./src/Routes/authRoutes')
 const userRoute = require('./src/Routes/userRoutes')
 require('dotenv').config()
 const app = express();
+app.use(express.json())
 
 // Middleware
 app.use(express.static('public'));
