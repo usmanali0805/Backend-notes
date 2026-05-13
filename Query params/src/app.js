@@ -23,7 +23,6 @@ DBConnection()
 app.use('/api/v1/auth' , authRoutes)
 app.use('/api/v1/user' , UserRoutes)
 
-
 app.get('/health' , (req , res)=>{
     res.send('Server is running on a perfect length')
 })
