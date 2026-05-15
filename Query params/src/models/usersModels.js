@@ -14,6 +14,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         minlenght:8,
         required :true
+    },
+    age :{
+        type: Number,
+        required :true
     }
 })
 
