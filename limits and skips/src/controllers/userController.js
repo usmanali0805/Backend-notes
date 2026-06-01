@@ -13,7 +13,7 @@ const getUserController = async (req, res) => {
 
         }
 
-        const users = await User.find(query).limit(3).skip(1).sort( 'age')
+        const users = await User.find()
         Response(true, 200, "Users Fetch successfully", users, res)
 
 
