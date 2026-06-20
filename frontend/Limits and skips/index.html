@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Users App</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
   <div class="container">
@@ -15,15 +17,19 @@
     <!-- Add User Form -->
     <form id="userForm">
 
-      <input type="text" id="name" placeholder="Enter Name" required />
+      <input type="text" id="name" placeholder="Search by Name" required />
 
-      <input type="email" id="email" placeholder="Enter Email" required />
+      <input type="number" id="MinAge" placeholder="Min age required " />
 
-      <input type="password" id="password" placeholder="Enter Password" required />
+      <input type="number" id="MaxAge" placeholder="Max age" required />
 
-      <input type="number" id="age" placeholder="Enter Age" required />
+      <select name="sort by age" id="sort">
+        <option >Sort by age</option>
+        <option value="Ascending">Ascending</option>
+        <option value="Decending">Decending</option>
+      </select>
 
-      <button type="submit">Add User</button>
+      <button type="submit">Apply</button>
 
     </form>
 
@@ -34,4 +40,5 @@
 
   <script src="app.js"></script>
 </body>
+
 </html>

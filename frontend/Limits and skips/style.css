@@ -47,3 +47,7 @@ button:hover{
   border-radius: 10px;
   margin-bottom: 10px;
 }
+
+#sort{
+  padding: 10px;
+}

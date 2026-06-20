@@ -4,6 +4,7 @@ const Response = require("./response")
 console.log('yahan bhi aya')
 const getUserController = async (req, res) => {
     let query = {}
+    let limit = req.query.limit ?? 10
     try {
         if (req.query.ageStart && req.query.ageEnd) {
             const queryFlage = { ...req.query }
@@ -13,7 +14,7 @@ const getUserController = async (req, res) => {
 
         }
 
-        const users = await User.find()
+        const users = await User.find().limit(limit)
         Response(true, 200, "Users Fetch successfully", users, res)
 
 
