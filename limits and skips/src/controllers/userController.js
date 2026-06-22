@@ -1,22 +1,47 @@
 const User = require("../models/usersModels")
 const Response = require("./response")
 
-console.log('yahan bhi aya')
 const getUserController = async (req, res) => {
-    let query = {}
-    let limit = req.query.limit ?? 10
+    // if(false){
+    //     throw "usman"
+    // }else{
+    //     throw "Database timeout"
+    // }
     try {
+    let query = {}
+    let sort = req.query.sort || null
+
+    let limit = req.query.limit ?? 10
+    let page = req.query.currentpage - 1
         if (req.query.ageStart && req.query.ageEnd) {
             const queryFlage = { ...req.query }
             delete queryFlage.ageStart
             delete queryFlage.ageEnd
-            query = { ...queryFlage ,age: { $gte: req.query.ageStart, $lte: req.query.ageEnd } }
+            query = { ...queryFlage, age: { $gte: req.query.ageStart, $lte: req.query.ageEnd } }
 
         }
+        if (req.query.username) {
+            let myQueryData = { ...req.query }
+            delete myQueryData.limit
+            delete myQueryData.skip
+            delete myQueryData.sort
+            try {
+                const users = await User.find({
+                    "name": myQueryData.username
+                }).limit(limit).skip(page * limit).sort(sort)
+                users && Response(true, 200, "Users Fetch successfully", users, res)
+                return;
+            } catch (error) {
+                Response(false, 500, error.message, [], res)
+            }
+        }
+        try {
+            const users = await User.find().limit(limit).skip(page * limit).sort(sort)
+            Response(true, 200, "Users Fetch successfully", users, res)
+        } catch (error) {
+            Response(false, 400, error.message, [], res)
 
-        const users = await User.find().limit(limit)
-        Response(true, 200, "Users Fetch successfully", users, res)
-
+        }
 
     } catch (error) {
         Response(false, 400, error.message, [], res)
