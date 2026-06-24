@@ -1,44 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Users App</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-
   <div class="container">
-
     <h1>Users List</h1>
 
-    <!-- Add User Form -->
-    <form id="userForm">
-
-      <input type="text" id="name" placeholder="Search by Name" required />
-
-      <input type="number" id="MinAge" placeholder="Min age required " />
-
-      <input type="number" id="MaxAge" placeholder="Max age" required />
-
-      <select name="sort by age" id="sort">
-        <option >Sort by age</option>
-        <option value="Ascending">Ascending</option>
-        <option value="Decending">Decending</option>
+    <!-- <form id="userForm"> -->
+      <input type="text" id="name" placeholder="Search by Name" />
+      <input type="number" id="MinAge" placeholder="Min age" />
+      <input type="number" id="MaxAge" placeholder="Max age" />
+      <select id="sort">
+        <option>Sort by age</option>
+        <option value="age">Sort by Minimum age</option>
+        <option value="-age">Sort by Maximum age</option>
+        <option value="_id">Ascending</option>
+        <option value="-_id">Decending</option>
       </select>
+      <button id="submit">Apply</button>
+    <!-- </form> -->
 
-      <button type="submit">Apply</button>
-
-    </form>
-
-    <!-- Users -->
     <div id="usersContainer"></div>
 
+    <!-- Pagination -->
+    <div class="pagination" id="pagination">
+      <button class="page-btn" id="prevBtn" aria-label="Previous">&#8249;</button>
+      <div class="page-numbers" id="pageNumbers"></div>
+      <button class="page-btn" id="nextBtn" aria-label="Next">&#8250;</button>
+      <span class="page-info" id="pageInfo"></span>
+    </div>
   </div>
 
   <script src="app.js"></script>
 </body>
-
 </html>

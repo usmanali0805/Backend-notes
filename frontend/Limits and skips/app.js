@@ -1,19 +1,24 @@
 const API_URL = "http://localhost:5000/users";
 
 const usersContainer = document.getElementById("usersContainer");
-const userForm = document.getElementById("userForm");
+const userForm = document.getElementById("submit");
+const prevBtn = document.querySelector("#prevBtn")
+const nextBtn = document.querySelector("#nextBtn")
+let ageStart;
+let ageEnd;
+let username;
+let sortax;
+let Currentpage = 1;
+const limit = 5;
 
 
 // Fetch Users
 async function getUsers() {
 
-
   try {
+    const response = await fetch(`http://localhost:8000/api/v1/user?limit=${limit}&currentpage=${Currentpage}`);
+    const { data } = await response.json();
 
-    const limit = 5
-    const response = await fetch(`http://localhost:8000/api/v1/user?limit=${limit}`);
-    const {data} = await response.json();
- 
     console.log(data)
 
     usersContainer.innerHTML = "";
@@ -34,17 +39,35 @@ async function getUsers() {
   }
 }
 
+prevBtn.addEventListener("click", () => {
+  if (Currentpage > 1) {
+    Currentpage--;
+    getUsers()
+  }
+})
+nextBtn.addEventListener("click", () => {
+  if (Currentpage < 4) {
+    ++Currentpage;
+    getUsers()
+  }
+})
 
 // Initial Call
 getUsers();
 
-async function SearchUser(props) {
-   try {
-    console.log(props)
-    const response = await fetch("http://localhost:8000/api/v1/user");
 
-    const {data} = await response.json();
- 
+
+async function SearchUser() {
+  username = document.querySelector('#name').value
+  // ageStart = document.querySelector('#MinAge').value
+  // ageEnd = document.querySelector('#MaxAge').value
+  sortBy = document.querySelector('#sort').value
+  sortBy === "Sort by age" ? '' : document.querySelector('#sort').value
+  try {
+    const response = await fetch(`http://localhost:8000/api/v1/user?limit=${limit}&currentpage=${Currentpage}&username=${username}&sort=${sortBy}`);
+
+    const { data } = await response.json();
+
     console.log(data)
 
     usersContainer.innerHTML = "";
@@ -65,36 +88,11 @@ async function SearchUser(props) {
   }
 }
 
-
-
 // Add User
-userForm.addEventListener("submit", async (e) => {
+userForm.addEventListener("click", (e) => {
   SearchUser()
+  console.log('chala')
 });
-//   e.preventDefault();
 
-//   const newUser = {
-//     name: document.getElementById("name").value,
-//     email: document.getElementById("email").value,
-//     password: document.getElementById("password").value,
-//     age: document.getElementById("age").value,
-//   };
 
-//   try {
-
-//     await fetch("http://localhost:8000/api/v1/auth/signup", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(newUser),
-//     });
-
-    // userForm.reset();
-
-    // getUsers();
-
-//   } catch (error) {
-//     console.log(error);
-//   }
 
