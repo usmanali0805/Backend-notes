@@ -25,8 +25,6 @@ const signupController = async (req, res) => {
     }
 }
 
-
-
 const loginController = async (req, res) => {
     try {
         const { email, password } = req.body;

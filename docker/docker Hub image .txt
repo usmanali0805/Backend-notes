@@ -1,0 +1,7 @@
+we can get any image from 
+" Docker Hub"
+ and and we have to write like this command to run docker image 
+
+ ---> docker run hello-world
+
+Here 'hello-world' is a docker image which is import from docker hub
