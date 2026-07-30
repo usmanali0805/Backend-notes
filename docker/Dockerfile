@@ -10,4 +10,5 @@ USER node
 
 CMD [ "npm", "start" ]
 
-EXPOSE 5000docker run -p 5000:5000 my-node-app
+EXPOSE 5000 docker run -p 5000:5000 my-node-app
+docker push usmanali0805/dockerpractiseimage:latest
