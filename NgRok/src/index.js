@@ -2,9 +2,15 @@ import express from 'express'
 import UserRoutes from './routes/UserRoutes.js'
 import AuthRoutes from './routes/AuthRoutes.js'
 import dotenv from 'dotenv'
+import connectDB from './controller/db.js'
+import dns from 'dns'
+dns.setServers(['1.1.1.1', '8.8.8.8']);
 dotenv.config()
 
 const app = express()
+
+app.use(express.json())
+connectDB()
 
 app.use('/', UserRoutes)
 app.use('/auth' , AuthRoutes)

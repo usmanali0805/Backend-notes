@@ -7,4 +7,4 @@ UserRoutes.post('/user', (req , res)=>{})
 UserRoutes.put('/user', (req , res)=>{})
 UserRoutes.delete('/user', (req , res)=>{})
 
-export default UserRoutes
+export default UserRoutes;
