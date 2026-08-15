@@ -1,7 +1,10 @@
 import User from "../modules/Usermodel.js"
+import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 
 const LoginFunc = (req, res) => {
+    const token = jwt.sign({ email, username }, process.env.JWT_SECRET_KEY);
+    console.log(token)
 
 }
 const SignupFunc = async (req, res) => {
@@ -13,22 +16,17 @@ const SignupFunc = async (req, res) => {
                 msg: "Please fill all required fields"
             })
         }
-        const dbUser = await User.findOne({ email })
-        if (!dbUser) {
-            const token = jwt.sign({email, username}, process.env.JWT_SECRET_KEY);
-            console.log(token)
+        const hash = await bcrypt.hash(password, 12);
+        req.body.password = hash
+        await User.create(req.body)
+        return res.status(200).json({
+            status: true,
+            message: "User Signup successfully ",
+            data: req.body
+        })
 
-            const newUser = User.create(req.body)
-            return res.json(newUser)
-        } else {
-            return res.status(400).json({
-                status: false,
-                msg: "Please use different email fields"
-
-            })
-        }
     } catch (error) {
-        res.status(400).json(error.message)
+       return res.status(400).json(error.message)
     }
 }
 export { LoginFunc, SignupFunc }
