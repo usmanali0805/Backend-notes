@@ -4,9 +4,9 @@ configDotenv()
 import Stripe from 'stripe';
 import cors from 'cors';
 import mongoose from 'mongoose';
-import OrderModel from './models/OrderModel.js';
+import order from './models/OrderModel.js';
 import WebhookEventModel from './models/webhookEvent.js';
-import normalizeCartItems from './models/utils/helper.js';
+import normalizeCartItems, { getPublicProduct, PRODUCT_CATALOG } from './utils/helper.js';
 import stripeWebhookHandler from 'stripe'
 // const app = express()
 
@@ -21,9 +21,13 @@ import stripeWebhookHandler from 'stripe'
 //     console.log('Server is running on port no' + process.env.PORT)
 // })
 
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 
 const app = express();
+
+app.use(cors(process.env.ORIGIN))
+
 app.post(
   "/api/stripe/webhook",
   express.raw({ type: "application/json" }),
@@ -39,30 +43,11 @@ app.post(
       const { items, customerEmail } = req.body;
 
       const normalizedItems = normalizeCartItems(items);
-        return res.send({
-            status : true ,
-            message : 'testing'
-        })
       const amountTotal = normalizedItems.reduce(
         (total, item) =>
           total + item.unitAmount * item.quantity,
         0
       );
-
-      const order = await Order.create({
-        customerEmail: customerEmail || null,
-
-        items: normalizedItems.map((item) => ({
-          productId: item.productId,
-          name: item.name,
-          quantity: item.quantity,
-          unitAmount: item.unitAmount,
-        })),
-
-        amountTotal,
-        currency: "usd",
-        status: "pending",
-      });
 
       const session =
         await stripe.checkout.sessions.create({
@@ -85,25 +70,25 @@ app.post(
           customer_email: customerEmail || undefined,
 
           success_url:
-            `${process.env.CLIENT_URL}` +
+            `${process.env.ORIGIN}` +
             `/payment/success?session_id={CHECKOUT_SESSION_ID}`,
 
           cancel_url:
-            `${process.env.CLIENT_URL}/checkout?cancelled=true`,
+            `${process.env.ORIGIN}/checkout?cancelled=true`,
 
           metadata: {
-            orderId: order._id.toString(),
+            orderId: Date.now(),
           },
 
           payment_intent_data: {
             metadata: {
-              orderId: order._id.toString(),
+              orderId: Date.now(),
             },
           },
         });
 
       order.stripeCheckoutSessionId = session.id;
-      await order.save();
+      // await order.save();
 
       return res.status(201).json({
         success: true,
@@ -126,10 +111,25 @@ app.post(
   }
 );
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+app.get("/api/products", (req, res) => {
+  const products = Object.values(PRODUCT_CATALOG).map(getPublicProduct);
+  res.status(200).json({ success: true, products });
+});
+
+app.get("/api/products/:productId", (req, res) => {
+  const product = PRODUCT_CATALOG[req.params.productId];
+
+  if (!product) {
+    return res.status(404).json({
+      success: false,
+      message: "Product not found",
+    });
+  }
+})
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT , ()=>{
-    console.log(`Server is running on PORT No :${PORT}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on PORT No :${PORT}`);
 })
